@@ -9,7 +9,7 @@
 # Why its needed
  CSGO was a set rate of 64t each second. CS2 is, well, the same sorta, with some added floating point voodoo subtick math
  
- This results in inaccuracy over long periods of idle maptime
+ This results in inaccuracy over long periods of maptime
  
  At 24 hours, screen tearing begins, and core game mechanics like jump height are altered
  
