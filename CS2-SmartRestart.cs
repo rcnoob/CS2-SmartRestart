@@ -3,17 +3,17 @@ using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using System.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace SmartRestart
 {
     public class SmartRestart : BasePlugin
     {
         public override string ModuleName => "CS2-SmartRestart";
-        public override string ModuleVersion => $"1.0.0";
+        public override string ModuleVersion => $"1.0.1";
         public override string ModuleAuthor => "rc https://github.com/rcnoob/";
         public override string ModuleDescription => "Periodically restart the current map";
         private Timer restartTimer = new Timer(1800000); // 30 minutes
-        private int playerCount;
 
         public override void Load(bool hotReload)
         {
@@ -29,8 +29,7 @@ namespace SmartRestart
         private void Restart()
         {
             Server.NextFrame(() => {
-                playerCount = Utilities.GetPlayers().Count;
-                if (!PlayersConnected())
+                if (Utilities.GetPlayers().Count == 0)
                     Server.ExecuteCommand($"ds_workshop_changelevel {Server.MapName}");
                 if(HoursOnline() >= 24.0)
                     Server.ExecuteCommand($"ds_workshop_changelevel {Server.MapName}");
@@ -42,14 +41,6 @@ namespace SmartRestart
         private double HoursOnline()
         {
             return Math.Round(Server.CurrentTime / 3600, 1, MidpointRounding.ToNegativeInfinity);
-        }
-
-        private bool PlayersConnected()
-        {
-            if (playerCount == 0)
-                return true;
-            else
-                return false;
         }
     }
 }
